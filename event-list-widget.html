@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Found In Kensington ~ Event List Widget</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
+	<script src="https://unpkg.com/vue"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+</head>
+<body>
+	<div id="app">
+		<section class="container">
+			<div class="columns is-mobile is-centered" id="sectioncontainer">
+				<div class="column is-narrow">
+					<article class="message is-black">
+						<div class="message-header">
+							<p>Get {{ dispCat}} Now</p>
+						</div>
+						<div class="message-body">
+							<div class="select">
+								<select @change="getChange">
+									<option >View All</option>
+									<option v-for="c in catList" :key="c.id" v-bind:value="c.id">{{ c.title }}</option>
+								</select>
+							</div>
+							<div class="board-item" v-for="e in events">
+								<div class="board-item-content">
+		              				<h3>{{ e.title }}</h3>
+		              				<p><small>{{ e.display_date }}</small></p>
+								</div>
+							</div>
+						</div>
+					</article>
+				</div>
+			</div>
+		</section>
+	</div>
+	<script>
+		// Vue Magic
+		new Vue({
+			el: '#app',
+			data: {
+				category: 'all',
+				dispCat: 'Help',
+				events: [],
+				catList: {}
+			},
+			methods: {
+				getEvents(category = null) {
+					this.events = []
+					var self = this,
+						url;
+
+					if(category) {
+						url = 'https://foundinkensington.com/api/event?cat=' + category
+					} else {
+						url = 'https://foundinkensington.com/api/event'
+					}
+					axios.get(url)
+					.then(res => {
+						self.events = res.data.fikapi.data
+						console.log(res.data.fikapi.data)
+					})
+					.catch(res => {});
+				},
+				getChange(e) {
+
+					let cat = e.target.value ? e.target.value : null
+
+					this.getEvents(cat)
+
+				},
+				init() {
+					var self = this
+					axios.get('https://foundinkensington.com/api')
+					.then(res => {
+						console.log(res.data.fikapi.categories)
+						self.catList = res.data.fikapi.categories
+						this.getEvents();
+					})
+					.catch(res => {
+						console.log('derr an error')
+						console.log('res', res)
+					});
+				}
+			},
+			mounted() {
+				this.init()
+			}
+		})
+	</script>
+</body>
+</html>
