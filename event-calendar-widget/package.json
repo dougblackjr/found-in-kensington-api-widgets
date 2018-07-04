@@ -12,6 +12,8 @@
   "author": "Found In Kensington",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.18.0",
+    "moment": "^2.22.2",
     "vue-event-calendar": "^1.5.2"
   },
   "devDependencies": {
