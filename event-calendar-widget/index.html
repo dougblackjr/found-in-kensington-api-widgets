@@ -4,9 +4,12 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta charset="utf-8">
 	<title>Found in Kensington - Calendar Widget</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
-	<div id="app"></div>
-	<script src="./build.js" type="text/javascript" charset="utf-8" async defer></script>
+	<div id="app">
+		<vue-event-calendar :events="demoEvents"></vue-event-calendar>
+	</div>
+	<script src="./dist/app.js" type="text/javascript" charset="utf-8"></script>
 </body>
 </html>
